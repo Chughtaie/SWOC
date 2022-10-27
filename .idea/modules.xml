@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/swoc/swoc.iml" filepath="$PROJECT_DIR$/swoc/swoc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/swoc/android/swoc_android.iml" filepath="$PROJECT_DIR$/swoc/android/swoc_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/swoc.iml" filepath="$PROJECT_DIR$/swoc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/swoc_android.iml" filepath="$PROJECT_DIR$/android/swoc_android.iml" />
     </modules>
   </component>
 </project>
