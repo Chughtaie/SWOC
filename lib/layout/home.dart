@@ -15,6 +15,8 @@ import 'package:swoc/services/directions_model.dart';
 import 'package:swoc/shared/global.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/asset_provider.dart';
+
 class IconButtonData {
   String? label;
   IconData? iconData;
@@ -63,15 +65,15 @@ class _HomeState extends State<Home> {
   late BitmapDescriptor binIcon;
   late BitmapDescriptor truckIcon;
 
-  LatLng truckLocation = LatLng(33.66743083384247, 73.00389228151198);
+  LatLng truckLocation = const LatLng(33.66743083384247, 73.00389228151198);
   List<LatLng> binLocations = const [
-    LatLng(33.64490319805824, 73.02822245136964),
-    LatLng(33.69148973888036, 73.01070056279906),
-    LatLng(33.67748329451909, 73.05981876428284),
-    LatLng(33.71577592993503, 73.09179033473332)
+    LatLng(33.667395265223576, 72.99909392081224),
+    LatLng(33.66804208771481, 72.9947221758802),
+    LatLng(33.67053303137732, 72.99938712068705),
+    LatLng(33.66890928261966, 73.00179310499149)
   ];
 
-  late List<LatLng> routes;
+  //late List<LatLng> routes;
   addMarkers() async {
     Set<Marker> markers = {};
     markers.add(
@@ -93,15 +95,19 @@ class _HomeState extends State<Home> {
             ));
     Provider.of<MapProvider>(context, listen: false).setMarkers(markers);
     await addPolylines();
-    Provider.of<MapProvider>(context, listen: false).setPolyLines(polylines);
   }
 
-  late Set<Polyline> polylines;
   addPolylines() async {
+    late Set<Polyline> polylines;
     polylines = {};
-    List.generate(routes.length - 1, (index) async {
-      final directions = await DirectionsRepository()
-          .getDirections(origin: routes[index], destination: routes[index + 1]);
+    List.generate(
+        Provider.of<MapProvider>(context, listen: false).routes.length - 1,
+        (index) async {
+      final directions = await DirectionsRepository().getDirections(
+          origin:
+              Provider.of<MapProvider>(context, listen: false).routes[index],
+          destination: Provider.of<MapProvider>(context, listen: false)
+              .routes[index + 1]);
       return polylines.add(
         Polyline(
           polylineId: PolylineId(index.toString()),
@@ -114,6 +120,7 @@ class _HomeState extends State<Home> {
         ),
       );
     });
+    Provider.of<MapProvider>(context, listen: false).setPolyLines(polylines);
   }
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
@@ -131,11 +138,13 @@ class _HomeState extends State<Home> {
     getBytesFromAsset('assets/images/bin.jpg', 60).then((response) {
       markerIcon = response;
       binIcon = BitmapDescriptor.fromBytes(markerIcon);
+      Provider.of<AssetProvider>(context, listen: false).binIcon = binIcon;
     });
 
     getBytesFromAsset('assets/images/truck.png', 110).then((response) {
       markerIcon = response;
       truckIcon = BitmapDescriptor.fromBytes(markerIcon);
+      Provider.of<AssetProvider>(context, listen: false).truckIcon = truckIcon;
     });
   }
 
@@ -144,7 +153,8 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     customMarker();
-    routes = [truckLocation] + binLocations;
+    Provider.of<MapProvider>(context, listen: false).routes =
+        ([truckLocation] + binLocations);
   }
 
   @override
@@ -233,7 +243,7 @@ class TopHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           right: BorderSide(
             //                   <--- left side

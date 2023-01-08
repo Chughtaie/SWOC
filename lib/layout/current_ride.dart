@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
 import 'package:swoc/component/app_bar.dart';
 import 'package:swoc/component/main_drawer.dart';
 import 'package:swoc/component/text_button.dart';
 import 'package:swoc/shared/global.dart';
+import '../provider/map_data_provider.dart';
 import '../services/location_with_map.dart';
 import '../services/location_with_map_container.dart';
 
@@ -80,9 +82,21 @@ class CurrentRide extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
+                  children: [
                     TopHeading(label: 'Total Bins ', label1: '10'),
-                    TopHeading(label: 'Remaining ', label1: '5')
+                    TopHeading(label: 'Remaining ', label1: '5'),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<MapProvider>(context, listen: false)
+                            .addBin();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(10),
+                        child: Text('Next'),
+                        color: Colors.blue,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -124,33 +138,36 @@ class TopHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(
-            //                   <--- left side
-            color: secondColor,
-            width: 3.0,
-          ),
-          bottom: BorderSide(
-            //                    <--- top side
-            color: secondColor,
-            width: 3.0,
+    return Flexible(
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: const BoxDecoration(
+          border: Border(
+            right: BorderSide(
+              //                   <--- left side
+              color: secondColor,
+              width: 3.0,
+            ),
+            bottom: BorderSide(
+              //                    <--- top side
+              color: secondColor,
+              width: 3.0,
+            ),
           ),
         ),
-      ),
-      child: Column(
-        children: [
-          Text(
-            label!,
-            style: const TextStyle(fontSize: 25, color: Colors.white),
-          ),
-          Text(
-            label1!,
-            style: const TextStyle(fontSize: 50, color: Colors.white),
-          ),
-        ],
+        child: Column(
+          children: [
+            Text(
+              label!,
+              style: const TextStyle(fontSize: 23, color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              label1!,
+              style: const TextStyle(fontSize: 50, color: Colors.white),
+            ),
+          ],
+        ),
       ),
     );
   }

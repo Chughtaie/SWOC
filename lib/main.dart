@@ -4,6 +4,7 @@ import 'package:swoc/layout/current_ride.dart';
 import 'package:swoc/layout/home.dart';
 import 'package:swoc/layout/login.dart';
 import 'package:swoc/layout/profile.dart';
+import 'package:swoc/provider/asset_provider.dart';
 import 'package:swoc/provider/map_data_provider.dart';
 
 void main() {
@@ -13,12 +14,15 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   MapProvider mapProvider = MapProvider();
+  AssetProvider assetProvider = AssetProvider();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<MapProvider>(create: (context) => mapProvider),
+        ChangeNotifierProvider<AssetProvider>(
+            create: (context) => assetProvider)
       ],
       child: MaterialApp(
           title: 'Flutter Demo',
